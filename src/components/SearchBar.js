@@ -11,6 +11,7 @@ const SearchBar = (props) => {
       <TextInput
         style={searchbarStyle.input}
         placeholder="Search a city.."
+        onChangeText={(tx)=>props.onChange(tx)}
       />
     </View >
   );
