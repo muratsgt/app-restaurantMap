@@ -4,6 +4,7 @@ import { View, FlatList, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 import { City, RestaurantDetail, SearchBar } from './components';
+import {mapStyle} from './styles';
 
 // custommarker
 // custommapstyle
@@ -35,8 +36,10 @@ const Main = (props) => {
 
   const onCitySelect = async (city) => {
     const { data: { restaurants } } = await Axios.get("https://opentable.herokuapp.com/api/restaurants?city=" + city);
+    // rest according to selected city
     setRestaurants(restaurants);
 
+    // array for the rest locations of the selected city
     const restLocs = restaurants.map((itm) => {
       return {
         latitude: itm.lat,
@@ -44,6 +47,7 @@ const Main = (props) => {
       }
     });
 
+    // to zoom rest locations, updates the options of mapview
     mapRef.current.fitToCoordinates(restLocs, {
       edgePadding: {
         top: 100,
@@ -54,6 +58,7 @@ const Main = (props) => {
     });
   }
 
+  // when clicked to the rest marker on map
   const onRestSelect = (res) => {
     setSelectedRest(res);
     setModalFlag(true);
@@ -65,6 +70,7 @@ const Main = (props) => {
         ref={mapRef}
         showsUserLocation={true}
         style={{ flex: 1 }}
+        customMapStyle={mapStyle}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
